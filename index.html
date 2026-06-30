@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财务 RPA 自动化方案</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FF6B9D, #FF8F6B, #FFB347, #87CEEB, #4ECDC4);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+  }
+
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* 顶部标题 */
+  .header {
+    text-align: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+
+  .header .icon-row {
+    font-size: 36px;
+    margin-bottom: 4px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    letter-spacing: 2px;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* 卡片容器 */
+  .cards-container {
+    display: flex;
+    gap: 24px;
+    max-width: 1200px;
+    width: 100%;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* 卡片 */
+  .card {
+    flex: 1;
+    min-width: 380px;
+    max-width: 560px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 14px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+  }
+
+  .card.card-pink::before {
+    background: linear-gradient(90deg, #FF6B9D, #FF8F6B, #FFB347);
+  }
+
+  .card.card-blue::before {
+    background: linear-gradient(90deg, #4ECDC4, #45B7D1, #87CEEB);
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 80px rgba(0,0,0,0.18), 0 6px 20px rgba(0,0,0,0.08);
+  }
+
+  /* 卡片头 */
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    width: fit-content;
+  }
+
+  .card-pink .card-badge {
+    background: linear-gradient(135deg, #FFF0F5, #FFE4E8);
+    color: #E84A7A;
+  }
+
+  .card-blue .card-badge {
+    background: linear-gradient(135deg, #E0F7FA, #E0F2F1);
+    color: #00897B;
+  }
+
+  .card-icon {
+    font-size: 30px;
+    margin-bottom: 0;
+  }
+
+  .card h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2D3436;
+    line-height: 1.3;
+  }
+
+  .card h3 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #636E72;
+    line-height: 1.4;
+  }
+
+  /* 分隔线 */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #DFE6E9, transparent);
+    margin: 0;
+  }
+
+  /* 信息区块 */
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #B2BEC3;
+  }
+
+  .section-text {
+    font-size: 12px;
+    color: #636E72;
+    line-height: 1.5;
+  }
+
+  /* 流程步骤 */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #F8F9FA;
+    transition: background 0.2s;
+  }
+
+  .flow-step:hover {
+    background: #F1F3F5;
+  }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .card-pink .step-num {
+    background: linear-gradient(135deg, #FF6B9D, #FF8F6B);
+  }
+
+  .card-blue .step-num {
+    background: linear-gradient(135deg, #4ECDC4, #45B7D1);
+  }
+
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .step-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2D3436;
+  }
+
+  .step-desc {
+    font-size: 10px;
+    color: #B2BEC3;
+  }
+
+  .step-auto {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: #E8F5E9;
+    color: #2E7D32;
+    width: fit-content;
+    margin-top: 2px;
+  }
+
+  .step-manual {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: #FFF3E0;
+    color: #E65100;
+    width: fit-content;
+    margin-top: 2px;
+  }
+
+  /* 数据指标 */
+  .metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .metric-item {
+    background: #F8F9FA;
+    border-radius: 8px;
+    padding: 6px;
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: #2D3436;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    color: #B2BEC3;
+    margin-top: 0;
+  }
+
+  .card-pink .metric-value { color: #E84A7A; }
+  .card-blue .metric-value { color: #00897B; }
+
+  /* 按钮 */
+  .card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+    margin-top: auto;
+    flex-shrink: 0;
+  }
+
+  .card-pink .card-btn {
+    background: linear-gradient(135deg, #FF6B9D, #FF8F6B);
+  }
+
+  .card-blue .card-btn {
+    background: linear-gradient(135deg, #4ECDC4, #45B7D1);
+  }
+
+  .card-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  }
+
+  .card-btn svg {
+    width: 18px; height: 18px;
+  }
+
+  /* 页脚 */
+  .footer {
+    margin-top: 8px;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 11px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  /* 响应式 */
+  @media (max-width: 850px) {
+    .cards-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      min-width: unset;
+      max-width: 100%;
+      width: 100%;
+    }
+    .header h1 {
+      font-size: 26px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部 -->
+<div class="header">
+  <div class="icon-row">💼⚡</div>
+  <h1>财务 RPA 自动化方案</h1>
+  <p class="subtitle">影刀 RPA + AI · 降本增效 · 端到端自动化</p>
+</div>
+
+<!-- 卡片区域 -->
+<div class="cards-container">
+
+  <!-- ============ 卡片一：税务申报 ============ -->
+  <div class="card card-pink">
+
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="card-icon">🏛️</div>
+      <div>
+        <span class="card-badge">方案一</span>
+        <h2>一般纳税人增值税核对并申报</h2>
+        <h3>影刀RPA 自动化税务申报辅助流程</h3>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <span class="section-label">📋 方案背景</span>
+      <p class="section-text">
+        税务局发票系统与申报系统存在数据同步延迟，集团旗下
+        <strong>30-40家纳税主体</strong> 每月需跨系统人工核对，频繁切换多企业账号手动比对繁杂字段，
+        耗时 <strong>300-400分钟</strong>，工作量大且易出错。
+      </p>
+    </div>
+
+    <div class="section">
+      <span class="section-label">⚙️ 自动化流程</span>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <span class="step-title">登录国家电子税务局</span>
+            <span class="step-desc">自动打开客户端，处理密码与验证码</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <span class="step-title">获取进项 & 销项数据</span>
+            <span class="step-desc">从发票系统提取数据写入Excel模板</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <span class="step-title">核对进项与销项数据</span>
+            <span class="step-desc">跨系统字段自动比对，标记差异</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <span class="step-title">填写纳税申报表</span>
+            <span class="step-desc">自动填入核对后的数据，生成申报表</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="metrics">
+      <div class="metric-item">
+        <div class="metric-value">30-40</div>
+        <div class="metric-label">覆盖纳税主体数</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">~95%</div>
+        <div class="metric-label">预计效率提升</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">2 个</div>
+        <div class="metric-label">涉及系统（税务局+Excel）</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">1 次/月</div>
+        <div class="metric-label">执行频率</div>
+      </div>
+    </div>
+
+    <a class="card-btn" href="https://qzo7clfkyp.feishu.cn/wiki/J3KtwlKmQiojZMkBYBycPoHxn8c" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      查看完整需求文档
+    </a>
+
+  </div>
+
+  <!-- ============ 卡片二：对账方案 ============ -->
+  <div class="card card-blue">
+
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="card-icon">🤖</div>
+      <div>
+        <span class="card-badge">方案二</span>
+        <h2>影刀RPA 财务对账方案</h2>
+        <h3>AI 驱动的智能对账自动化流程</h3>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <span class="section-label">📋 方案背景</span>
+      <p class="section-text">
+        财务对账是月结核心环节，传统方式需要财务人员逐笔比对银行流水、发票与账务数据，
+        工作繁琐、效率低下。引入 <strong>影刀RPA + AI智能核对</strong>，
+        财务只需填写Excel模板，其余全流程自动完成，实现 <strong>端到端自动化</strong>。
+      </p>
+    </div>
+
+    <div class="section">
+      <span class="section-label">⚙️ 自动化流程</span>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <span class="step-title">财务同学填写Excel模板</span>
+            <span class="step-desc">按固定格式填入待对账数据</span>
+            <span class="step-manual">👤 人工操作（仅此一步）</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <span class="step-title">影刀RPA 读取数据</span>
+            <span class="step-desc">自动解析Excel模板，提取对账数据</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <span class="step-title">AI 逐笔智能核对</span>
+            <span class="step-desc">AI引擎逐笔匹配比对，标记异常项</span>
+            <span class="step-auto">🤖 AI 自动执行</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <span class="step-title">结果写回Excel模板</span>
+            <span class="step-desc">核对结果自动填入，生成对账报告</span>
+            <span class="step-auto">🤖 自动执行</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="metrics">
+      <div class="metric-item">
+        <div class="metric-value">1/4</div>
+        <div class="metric-label">仅需1步人工操作</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">AI</div>
+        <div class="metric-label">智能匹配引擎</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">全流程可追溯</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">Excel</div>
+        <div class="metric-label">标准化输入输出</div>
+      </div>
+    </div>
+
+    <a class="card-btn" href="https://qzo7clfkyp.feishu.cn/docx/NoK8dVpMwoSyq6xDZbScpeC3n7c?from=from_copylink" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      查看完整对账方案
+    </a>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  Powered by 影刀RPA · 财务自动化解决方案 · 2026
+</div>
+
+</body>
+</html>
