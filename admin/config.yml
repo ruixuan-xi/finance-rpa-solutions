@@ -1,0 +1,48 @@
+backend:
+  name: github
+  repo: ruixuan-xi/finance-rpa-solutions
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: "content/uploads"
+public_folder: "/content/uploads"
+
+collections:
+  - name: "solutions"
+    label: "方案管理"
+    files:
+      - name: "solutions-data"
+        label: "方案卡片数据"
+        file: "content/solutions.json"
+        fields:
+          - name: "solutions"
+            label: "方案列表"
+            widget: "list"
+            summary: "{{fields.badge}} · {{fields.title}}"
+            fields:
+              - { name: "theme", label: "配色主题", widget: "select", options: [{ label: "粉(方案一)", value: "pink" }, { label: "蓝(方案二)", value: "blue" }] }
+              - { name: "badge", label: "角标", widget: "string" }
+              - { name: "icon", label: "图标(emoji)", widget: "string" }
+              - { name: "title", label: "标题", widget: "string" }
+              - { name: "subtitle", label: "副标题", widget: "string" }
+              - { name: "background", label: "方案背景", widget: "text" }
+              - name: "steps"
+                label: "自动化流程步骤"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: "title", label: "步骤标题", widget: "string" }
+                  - { name: "desc", label: "步骤描述", widget: "string" }
+                  - name: "mode"
+                    label: "执行方式"
+                    widget: "select"
+                    options: [{ label: "自动执行 🤖", value: "auto" }, { label: "人工操作 👤", value: "manual" }]
+              - name: "metrics"
+                label: "数据指标"
+                widget: "list"
+                fields:
+                  - { name: "value", label: "数值", widget: "string" }
+                  - { name: "label", label: "说明", widget: "string" }
+              - { name: "buttonText", label: "按钮文字", widget: "string" }
+              - { name: "buttonUrl", label: "按钮链接", widget: "string" }

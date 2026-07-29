@@ -359,192 +359,76 @@
   <p class="subtitle">影刀 RPA + AI · 降本增效 · 端到端自动化</p>
 </div>
 
-<!-- 卡片区域 -->
-<div class="cards-container">
-
-  <!-- ============ 卡片一：税务申报 ============ -->
-  <div class="card card-pink">
-
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="card-icon">🏛️</div>
-      <div>
-        <span class="card-badge">方案一</span>
-        <h2>一般纳税人增值税核对并申报</h2>
-        <h3>影刀RPA 自动化税务申报辅助流程</h3>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="section">
-      <span class="section-label">📋 方案背景</span>
-      <p class="section-text">
-        税务局发票系统与申报系统存在数据同步延迟，集团旗下
-        <strong>30-40家纳税主体</strong> 每月需跨系统人工核对，频繁切换多企业账号手动比对繁杂字段，
-        耗时 <strong>300-400分钟</strong>，工作量大且易出错。
-      </p>
-    </div>
-
-    <div class="section">
-      <span class="section-label">⚙️ 自动化流程</span>
-      <div class="flow-steps">
-        <div class="flow-step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <span class="step-title">登录国家电子税务局</span>
-            <span class="step-desc">自动打开客户端，处理密码与验证码</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <span class="step-title">获取进项 & 销项数据</span>
-            <span class="step-desc">从发票系统提取数据写入Excel模板</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <span class="step-title">核对进项与销项数据</span>
-            <span class="step-desc">跨系统字段自动比对，标记差异</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <span class="step-title">填写纳税申报表</span>
-            <span class="step-desc">自动填入核对后的数据，生成申报表</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="metrics">
-      <div class="metric-item">
-        <div class="metric-value">30-40</div>
-        <div class="metric-label">覆盖纳税主体数</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">~95%</div>
-        <div class="metric-label">预计效率提升</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">2 个</div>
-        <div class="metric-label">涉及系统（税务局+Excel）</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">1 次/月</div>
-        <div class="metric-label">执行频率</div>
-      </div>
-    </div>
-
-    <a class="card-btn" href="https://qzo7clfkyp.feishu.cn/wiki/J3KtwlKmQiojZMkBYBycPoHxn8c" target="_blank">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      查看完整需求文档
-    </a>
-
-  </div>
-
-  <!-- ============ 卡片二：对账方案 ============ -->
-  <div class="card card-blue">
-
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="card-icon">🤖</div>
-      <div>
-        <span class="card-badge">方案二</span>
-        <h2>影刀RPA 财务对账方案</h2>
-        <h3>AI 驱动的智能对账自动化流程</h3>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="section">
-      <span class="section-label">📋 方案背景</span>
-      <p class="section-text">
-        财务对账是月结核心环节，传统方式需要财务人员逐笔比对银行流水、发票与账务数据，
-        工作繁琐、效率低下。引入 <strong>影刀RPA + AI智能核对</strong>，
-        财务只需填写Excel模板，其余全流程自动完成，实现 <strong>端到端自动化</strong>。
-      </p>
-    </div>
-
-    <div class="section">
-      <span class="section-label">⚙️ 自动化流程</span>
-      <div class="flow-steps">
-        <div class="flow-step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <span class="step-title">财务同学填写Excel模板</span>
-            <span class="step-desc">按固定格式填入待对账数据</span>
-            <span class="step-manual">👤 人工操作（仅此一步）</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <span class="step-title">影刀RPA 读取数据</span>
-            <span class="step-desc">自动解析Excel模板，提取对账数据</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <span class="step-title">AI 逐笔智能核对</span>
-            <span class="step-desc">AI引擎逐笔匹配比对，标记异常项</span>
-            <span class="step-auto">🤖 AI 自动执行</span>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <span class="step-title">结果写回Excel模板</span>
-            <span class="step-desc">核对结果自动填入，生成对账报告</span>
-            <span class="step-auto">🤖 自动执行</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="metrics">
-      <div class="metric-item">
-        <div class="metric-value">1/4</div>
-        <div class="metric-label">仅需1步人工操作</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">AI</div>
-        <div class="metric-label">智能匹配引擎</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">100%</div>
-        <div class="metric-label">全流程可追溯</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">Excel</div>
-        <div class="metric-label">标准化输入输出</div>
-      </div>
-    </div>
-
-    <a class="card-btn" href="https://qzo7clfkyp.feishu.cn/docx/NoK8dVpMwoSyq6xDZbScpeC3n7c?from=from_copylink" target="_blank">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      查看完整对账方案
-    </a>
-
-  </div>
-
-</div>
+<!-- 卡片区域（由 content/solutions.json 动态渲染） -->
+<div class="cards-container" id="cards"></div>
 
 <div class="footer">
   Powered by 影刀RPA · 财务自动化解决方案 · 2026
 </div>
+
+<script>
+  var STEP_LABEL = { auto: "🤖 自动执行", manual: "👤 人工操作" };
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function renderCard(s) {
+    var steps = (s.steps || []).map(function (st, idx) {
+      var mode = st.mode || 'auto';
+      return '<div class="flow-step">' +
+        '<div class="step-num">' + (idx + 1) + '</div>' +
+        '<div class="step-content">' +
+          '<span class="step-title">' + esc(st.title) + '</span>' +
+          '<span class="step-desc">' + esc(st.desc) + '</span>' +
+          '<span class="step-' + esc(mode) + '">' + esc(STEP_LABEL[mode] || '🤖 自动执行') + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    var metrics = (s.metrics || []).map(function (m) {
+      return '<div class="metric-item">' +
+        '<div class="metric-value">' + esc(m.value) + '</div>' +
+        '<div class="metric-label">' + esc(m.label) + '</div>' +
+      '</div>';
+    }).join('');
+    return '<div class="card card-' + (s.theme || 'pink') + '">' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<div class="card-icon">' + esc(s.icon || '💡') + '</div>' +
+        '<div>' +
+          '<span class="card-badge">' + esc(s.badge) + '</span>' +
+          '<h2>' + esc(s.title) + '</h2>' +
+          '<h3>' + esc(s.subtitle) + '</h3>' +
+        '</div>' +
+      '</div>' +
+      '<div class="divider"></div>' +
+      '<div class="section">' +
+        '<span class="section-label">📋 方案背景</span>' +
+        '<p class="section-text">' + esc(s.background) + '</p>' +
+      '</div>' +
+      '<div class="section">' +
+        '<span class="section-label">⚙️ 自动化流程</span>' +
+        '<div class="flow-steps">' + steps + '</div>' +
+      '</div>' +
+      '<div class="divider"></div>' +
+      '<div class="metrics">' + metrics + '</div>' +
+      '<a class="card-btn" href="' + esc(s.buttonUrl) + '" target="_blank">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
+        esc(s.buttonText) +
+      '</a>' +
+    '</div>';
+  }
+  fetch('content/solutions.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var list = (data && data.solutions) || [];
+      document.getElementById('cards').innerHTML = list.map(renderCard).join('');
+    })
+    .catch(function (err) {
+      document.getElementById('cards').innerHTML =
+        '<p style="color:#fff;text-align:center;">内容加载失败，请稍后刷新。</p>';
+      console.error(err);
+    });
+</script>
 
 </body>
 </html>

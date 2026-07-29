@@ -1,0 +1,48 @@
+{
+  "solutions": [
+    {
+      "theme": "pink",
+      "badge": "方案一",
+      "icon": "🏛️",
+      "title": "一般纳税人增值税核对并申报",
+      "subtitle": "影刀RPA 自动化税务申报辅助流程",
+      "background": "税务局发票系统与申报系统存在数据同步延迟，集团旗下30-40家纳税主体每月需跨系统人工核对，频繁切换多企业账号手动比对繁杂字段，耗时300-400分钟，工作量大且易出错。",
+      "steps": [
+        { "title": "登录国家电子税务局", "desc": "自动打开客户端，处理密码与验证码", "mode": "auto" },
+        { "title": "获取进项 & 销项数据", "desc": "从发票系统提取数据写入Excel模板", "mode": "auto" },
+        { "title": "核对进项与销项数据", "desc": "跨系统字段自动比对，标记差异", "mode": "auto" },
+        { "title": "填写纳税申报表", "desc": "自动填入核对后的数据，生成申报表", "mode": "auto" }
+      ],
+      "metrics": [
+        { "value": "30-40", "label": "覆盖纳税主体数" },
+        { "value": "~95%", "label": "预计效率提升" },
+        { "value": "2 个", "label": "涉及系统（税务局+Excel）" },
+        { "value": "1 次/月", "label": "执行频率" }
+      ],
+      "buttonText": "查看完整需求文档",
+      "buttonUrl": "https://qzo7clfkyp.feishu.cn/wiki/J3KtwlKmQiojZMkBYBycPoHxn8c"
+    },
+    {
+      "theme": "blue",
+      "badge": "方案二",
+      "icon": "🤖",
+      "title": "影刀RPA 财务对账方案",
+      "subtitle": "AI 驱动的智能对账自动化流程",
+      "background": "财务对账是月结核心环节，传统方式需要财务人员逐笔比对银行流水、发票与账务数据，工作繁琐、效率低下。引入影刀RPA + AI智能核对，财务只需填写Excel模板，其余全流程自动完成，实现端到端自动化。",
+      "steps": [
+        { "title": "财务同学填写Excel模板", "desc": "按固定格式填入待对账数据", "mode": "manual" },
+        { "title": "影刀RPA 读取数据", "desc": "自动解析Excel模板，提取对账数据", "mode": "auto" },
+        { "title": "AI 逐笔智能核对", "desc": "AI引擎逐笔匹配比对，标记异常项", "mode": "auto" },
+        { "title": "结果写回Excel模板", "desc": "核对结果自动填入，生成对账报告", "mode": "auto" }
+      ],
+      "metrics": [
+        { "value": "1/4", "label": "仅需1步人工操作" },
+        { "value": "AI", "label": "智能匹配引擎" },
+        { "value": "100%", "label": "全流程可追溯" },
+        { "value": "Excel", "label": "标准化输入输出" }
+      ],
+      "buttonText": "查看完整对账方案",
+      "buttonUrl": "https://qzo7clfkyp.feishu.cn/docx/NoK8dVpMwoSyq6xDZbScpeC3n7c?from=from_copylink"
+    }
+  ]
+}
