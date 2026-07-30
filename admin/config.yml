@@ -2,8 +2,8 @@ backend:
   name: github
   repo: ruixuan-xi/finance-rpa-solutions
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  client_id: Ov23lifMDSudiQuFDQmt
+  client_secret: 6d0cd5eaf0f5129e56fd4de830bcfeeba810a5f8
 
 media_folder: "content/uploads"
 public_folder: "/content/uploads"
