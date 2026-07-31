@@ -5,24 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>内容管理 · 财务RPA方案</title>
   <!--
-    使用 CMS_MANUAL_INIT 模式，手动初始化以绕过
-    Decap CMS 对 .netlify.app 域名的自动检测（它会错误地走 api.netlify.com/auth 代理）。
-    手动初始化后认证直接走 GitHub 原生 OAuth。
+    CMS_MANUAL_INIT = true：手动初始化 CMS，避免 Decap 在 .netlify.app 域名下
+    自动走 api.netlify.com/auth 代理（该站点已断开 Netlify Identity，代理不可用）。
+    这里显式指定 github 后端 + client_id + 直接指向 GitHub 授权地址。
   -->
   <script>
     window.CMS_MANUAL_INIT = true;
   </script>
   <script src="https://unpkg.com/decap-cms@3/dist/decap-cms.js"></script>
   <script>
-    // 手动初始化：从 /admin/config.yml 加载配置，强制使用 github 后端不走 netlify 代理
     CMS.init({
       config: {
         backend: {
           name: 'github',
           repo: 'ruixuan-xi/finance-rpa-solutions',
           branch: 'main',
-          // 显式声明不使用 Netlify 认证代理，直接走 GitHub OAuth
-          auth_endpoint: null,
+          client_id: 'Ov23lifMDSudiQuFDQmt',
+          auth_endpoint: 'https://github.com/login/oauth/authorize'
         },
         media_folder: '/images',
         public_folder: '/images',
