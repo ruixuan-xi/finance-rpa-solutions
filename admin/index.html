@@ -100,7 +100,7 @@ async function doLogin() {
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     const json = await res.json();
     sha = json.sha;
-    const decoded = atob(json.content.replace(/\s/g, ''));
+    const decoded = utf8Base64Decode(json.content);
     data = JSON.parse(decoded);
     render();
     document.getElementById('loginPanel').style.display = 'none';
@@ -226,7 +226,7 @@ async function saveData() {
   collect();
   showStatus('正在保存...', 'ok');
   try {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const content = utf8Base64Encode(JSON.stringify(data, null, 2));
     const payload = { message: 'update: 修改方案卡片数据 via admin', content, branch: BRANCH };
     if (sha) payload.sha = sha;
 
@@ -252,6 +252,18 @@ function showStatus(msg, type) {
   if (type === 'ok') setTimeout(() => el.style.display = 'none', 4000);
 }
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function utf8Base64Decode(base64) {
+  const binary = atob(base64.replace(/\s/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function utf8Base64Encode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
 function makeSelect(opts, sel) {
   return opts.map(o => `<option value="${o.v}" ${o.v===sel?'selected':''}>${o.t}</option>`).join('');
 }
