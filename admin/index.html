@@ -36,8 +36,10 @@
           repo: 'ruixuan-xi/finance-rpa-solutions',
           branch: 'main',
           client_id: 'Ov23lifMDSudiQuFDQmt',
-          // 显式指定 GitHub 原生授权地址，不走 Netlify 代理
-          auth_endpoint: 'https://github.com/login/oauth/authorize'
+          // 显式覆盖 Decap 默认的 Netlify 代理 base_url,
+          // 强制走 GitHub 原生 OAuth 而不是 api.netlify.com/auth
+          base_url: 'https://github.com',
+          auth_endpoint: 'login/oauth/authorize'
         },
         media_folder: '/images',
         public_folder: '/images',
