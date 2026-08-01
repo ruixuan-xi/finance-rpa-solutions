@@ -59,11 +59,18 @@ textarea{min-height:60px;resize:vertical}
     <div class="save-bar" style="margin-bottom:16px">
       <div id="loginInfo" style="font-size:13px;color:#666"></div>
       <div>
-        <button class="btn" onclick="saveData()">保存并发布</button>
-        <button class="btn" style="background:#64748b;margin-left:8px" onclick="addSolution()">+ 新增方案</button>
+        <button class="btn" onclick="saveData()">💾 保存并发布</button>
+        <button class="btn" style="background:#10b981;margin-left:8px" onclick="toggleMode()" id="modeBtn">↔ 切换 JSON 编辑</button>
+        <button class="btn" style="background:#64748b;margin-left:8px" id="addBtn" onclick="addSolution()">+ 新增方案</button>
       </div>
     </div>
-    <div id="solutionsBox"></div>
+    <div id="formBox">
+      <div id="solutionsBox"></div>
+    </div>
+    <div id="jsonBox" style="display:none">
+      <textarea id="jsonText" style="font-family:monospace;min-height:500px;white-space:pre"></textarea>
+      <div style="font-size:12px;color:#999;margin-top:6px">注意：JSON 格式必须合法，否则保存会失败</div>
+    </div>
   </div>
 </div>
 
@@ -74,12 +81,40 @@ let token = localStorage.getItem('rpa_cms_token') || '';
 let repo = localStorage.getItem('rpa_cms_repo') || 'ruixuan-xi/finance-rpa-solutions';
 let data = { solutions: [] };
 let sha = null;
+let isJsonMode = false;
 
 function init() {
   if (token) {
     document.getElementById('tokenInput').value = token;
     document.getElementById('repoInput').value = repo;
     doLogin();
+  }
+}
+
+function toggleMode() {
+  isJsonMode = !isJsonMode;
+  const formBox = document.getElementById('formBox');
+  const jsonBox = document.getElementById('jsonBox');
+  const modeBtn = document.getElementById('modeBtn');
+  const addBtn = document.getElementById('addBtn');
+  if (isJsonMode) {
+    collect();
+    document.getElementById('jsonText').value = JSON.stringify(data, null, 2);
+    formBox.style.display = 'none';
+    jsonBox.style.display = '';
+    modeBtn.textContent = '↔ 切换表单编辑';
+    addBtn.style.display = 'none';
+  } else {
+    try {
+      data = JSON.parse(document.getElementById('jsonText').value);
+      render();
+      formBox.style.display = '';
+      jsonBox.style.display = 'none';
+      modeBtn.textContent = '↔ 切换 JSON 编辑';
+      addBtn.style.display = '';
+    } catch (e) {
+      showStatus('JSON 格式错误: ' + e.message, 'err');
+    }
   }
 }
 
@@ -223,7 +258,15 @@ function collect() {
 }
 
 async function saveData() {
-  collect();
+  try {
+    if (isJsonMode) {
+      data = JSON.parse(document.getElementById('jsonText').value);
+    } else {
+      collect();
+    }
+  } catch (e) {
+    return showStatus('数据格式错误: ' + e.message, 'err');
+  }
   showStatus('正在保存...', 'ok');
   try {
     const content = utf8Base64Encode(JSON.stringify(data, null, 2));
