@@ -8,25 +8,74 @@
     @keyframes spin{to{transform:rotate(360deg)}}
     #cms-loading{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#555;flex-direction:column;gap:12px;position:relative;z-index:10}
     #cms-loading .spinner{width:36px;height:36px;border:3px solid #e0e0e0;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite}
-    /* CMS 根容器 */
     #cms-root{display:none}
   </style>
+  <!--
+    关键：CMS_MANUAL_INIT=true 强制手动初始化，
+    阻止 Decap 在 .netlify.app 域名下自动走 api.netlify.com/auth 代理。
+    同时必须提供 #cms-root 容器，否则 CMS.init() 报 appendChild null 错误。
+  -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
+  <script src="./decap-cms.js"></script>
 </head>
 <body>
-  <!-- CMS 渲染目标容器 -->
+  <!-- CMS 渲染挂载点 -->
   <div id="cms-root"></div>
 
-  <!-- Loading 指示器 -->
+  <!-- Loading -->
   <div id="cms-loading">
     <div class="spinner"></div>
     <p>正在加载管理后台...</p>
   </div>
 
-  <!-- 本地 decap-cms.js（避免 CDN 加载失败） -->
-  <script src="./decap-cms.js"></script>
-
   <script>
-    // CMS 渲染完成后隐藏 loading、显示 cms-root
+    CMS.init({
+      config: {
+        backend: {
+          name: 'github',
+          repo: 'ruixuan-xi/finance-rpa-solutions',
+          branch: 'main',
+          client_id: 'Ov23lifMDSudiQuFDQmt',
+          // 显式指定 GitHub 原生授权地址，不走 Netlify 代理
+          auth_endpoint: 'https://github.com/login/oauth/authorize'
+        },
+        media_folder: '/images',
+        public_folder: '/images',
+        collections: [
+          {
+            name: 'solutions',
+            label: '方案卡片数据',
+            files: [
+              {
+                name: 'solutions-data',
+                label: '方案列表',
+                file: 'content/solutions.json',
+                fields: [
+                  { label: '方案列表', name: 'solutions', widget: 'list', fields: [
+                    { label: '角标', name: 'badge', widget: 'string' },
+                    { label: '图标', name: 'icon', widget: 'string' },
+                    { label: '标题', name: 'title', widget: 'string' },
+                    { label: '背景描述', name: 'background', widget: 'text' },
+                    { label: '流程步骤', name: 'steps', widget: 'list', fields: [
+                      { label: '步骤标题', name: 'step_title', widget: 'string' },
+                      { label: '步骤内容', name: 'step_content', widget: 'string' }
+                    ]},
+                    { label: '关键指标', name: 'metrics', widget: 'list', fields: [
+                      { label: '指标值', name: 'value', widget: 'string' },
+                      { label: '指标说明', name: 'label', widget: 'string' }
+                    ]},
+                    { label: '按钮文字', name: 'button_text', widget: 'string' },
+                    { label: '按钮链接', name: 'button_link', widget: 'string' }
+                  ]}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    // CMS 渲染完成后隐藏 loading
     function hideLoading(){
       var el = document.getElementById('cms-loading');
       if(el) el.style.display = 'none';
