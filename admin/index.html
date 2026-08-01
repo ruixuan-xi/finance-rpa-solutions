@@ -6,34 +6,41 @@
   <title>内容管理 · 财务RPA方案</title>
   <style>
     @keyframes spin{to{transform:rotate(360deg)}}
-    #cms-loading{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#555;flex-direction:column;gap:12px}
+    #cms-loading{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#555;flex-direction:column;gap:12px;position:relative;z-index:10}
     #cms-loading .spinner{width:36px;height:36px;border:3px solid #e0e0e0;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite}
+    /* CMS 根容器 */
+    #cms-root{display:none}
   </style>
-  <!-- 使用本地 decap-cms.js，避免 CDN 加载失败 -->
-  <script src="./decap-cms.js"></script>
 </head>
 <body>
+  <!-- CMS 渲染目标容器 -->
+  <div id="cms-root"></div>
+
+  <!-- Loading 指示器 -->
   <div id="cms-loading">
     <div class="spinner"></div>
     <p>正在加载管理后台...</p>
   </div>
+
+  <!-- 本地 decap-cms.js（避免 CDN 加载失败） -->
+  <script src="./decap-cms.js"></script>
+
   <script>
-    // CMS 加载完成后隐藏 loading（多种检测方式兜底）
+    // CMS 渲染完成后隐藏 loading、显示 cms-root
     function hideLoading(){
       var el = document.getElementById('cms-loading');
       if(el) el.style.display = 'none';
+      var root = document.getElementById('cms-root');
+      if(root) root.style.display = '';
     }
-    // 方式1：检测 CMS 根容器出现
     var obs = new MutationObserver(function(){
-      if(document.querySelector('.cms-app, #cms-root, [class*="CMS_Main"], [class*="cms-root"]')){
+      if(document.querySelector('#cms-root > *, .cms-app, [class*="CMS_Main"]')){
         hideLoading(); obs.disconnect();
       }
     });
-    obs.observe(document.body,{childList:true,subtree:true});
-    // 方式2：监听 CMS 自定义事件
-    document.addEventListener('decap-cms-load', hideLoading);
-    // 方式3：兜底定时器
-    setTimeout(hideLoading, 15000);
+    obs.observe(document.getElementById('cms-root'), { childList: true });
+    obs.observe(document.body, { childList: true, subtree: true });
+    setTimeout(hideLoading, 20000);
   </script>
 </body>
 </html>
