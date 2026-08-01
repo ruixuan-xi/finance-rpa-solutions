@@ -4,15 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>内容管理 · 财务RPA方案</title>
-  <!--
-    CMS_MANUAL_INIT = true：手动初始化 CMS，避免 Decap 在 .netlify.app 域名下
-    自动走 api.netlify.com/auth 代理（该站点已断开 Netlify Identity，代理不可用）。
-    这里显式指定 github 后端 + client_id + 直接指向 GitHub 授权地址。
-  -->
-  <script>
-    window.CMS_MANUAL_INIT = true;
-  </script>
-  <script src="https://unpkg.com/decap-cms@3/dist/decap-cms.js"></script>
+  <style>
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #cms-loading{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#555;flex-direction:column;gap:12px}
+    #cms-loading .spinner{width:36px;height:36px;border:3px solid #e0e0e0;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite}
+  </style>
+  <script>window.CMS_MANUAL_INIT = true;</script>
+  <!-- 使用本地 decap-cms.js，避免 CDN 302 重定向/超时导致白屏 -->
+  <script src="./decap-cms.js"></script>
   <script>
     CMS.init({
       config: {
@@ -58,6 +57,23 @@
         ]
       }
     });
+    // CMS 加载完成后隐藏 loading
+    var observer = new MutationObserver(function(){
+      if (document.querySelector('.cms-app, #cms-root, [class*="CMS"]')) {
+        var el = document.getElementById('cms-loading');
+        if (el) el.style.display = 'none';
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    // 兜底：10秒后无论怎样都隐藏 loading
+    setTimeout(function(){ var el = document.getElementById('cms-loading'); if (el) el.style.display = 'none'; }, 10000);
   </script>
+</head>
+<body>
+  <div id="cms-loading">
+    <div class="spinner"></div>
+    <p>正在加载管理后台...</p>
+  </div>
 </body>
 </html>
