@@ -9,71 +9,31 @@
     #cms-loading{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#555;flex-direction:column;gap:12px}
     #cms-loading .spinner{width:36px;height:36px;border:3px solid #e0e0e0;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite}
   </style>
-  <script>window.CMS_MANUAL_INIT = true;</script>
-  <!-- 使用本地 decap-cms.js，避免 CDN 302 重定向/超时导致白屏 -->
+  <!-- 使用本地 decap-cms.js，避免 CDN 加载失败 -->
   <script src="./decap-cms.js"></script>
-  <script>
-    CMS.init({
-      config: {
-        backend: {
-          name: 'github',
-          repo: 'ruixuan-xi/finance-rpa-solutions',
-          branch: 'main',
-          client_id: 'Ov23lifMDSudiQuFDQmt',
-          auth_endpoint: 'https://github.com/login/oauth/authorize'
-        },
-        media_folder: '/images',
-        public_folder: '/images',
-        collections: [
-          {
-            name: 'solutions',
-            label: '方案卡片数据',
-            files: [
-              {
-                name: 'solutions-data',
-                label: '方案列表',
-                file: 'content/solutions.json',
-                fields: [
-                  { label: '方案列表', name: 'solutions', widget: 'list', fields: [
-                    { label: '角标', name: 'badge', widget: 'string' },
-                    { label: '图标', name: 'icon', widget: 'string' },
-                    { label: '标题', name: 'title', widget: 'string' },
-                    { label: '背景描述', name: 'background', widget: 'text' },
-                    { label: '流程步骤', name: 'steps', widget: 'list', fields: [
-                      { label: '步骤标题', name: 'step_title', widget: 'string' },
-                      { label: '步骤内容', name: 'step_content', widget: 'string' }
-                    ]},
-                    { label: '关键指标', name: 'metrics', widget: 'list', fields: [
-                      { label: '指标值', name: 'value', widget: 'string' },
-                      { label: '指标说明', name: 'label', widget: 'string' }
-                    ]},
-                    { label: '按钮文字', name: 'button_text', widget: 'string' },
-                    { label: '按钮链接', name: 'button_link', widget: 'string' }
-                  ]}
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    });
-    // CMS 加载完成后隐藏 loading
-    var observer = new MutationObserver(function(){
-      if (document.querySelector('.cms-app, #cms-root, [class*="CMS"]')) {
-        var el = document.getElementById('cms-loading');
-        if (el) el.style.display = 'none';
-        observer.disconnect();
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    // 兜底：10秒后无论怎样都隐藏 loading
-    setTimeout(function(){ var el = document.getElementById('cms-loading'); if (el) el.style.display = 'none'; }, 10000);
-  </script>
 </head>
 <body>
   <div id="cms-loading">
     <div class="spinner"></div>
     <p>正在加载管理后台...</p>
   </div>
+  <script>
+    // CMS 加载完成后隐藏 loading（多种检测方式兜底）
+    function hideLoading(){
+      var el = document.getElementById('cms-loading');
+      if(el) el.style.display = 'none';
+    }
+    // 方式1：检测 CMS 根容器出现
+    var obs = new MutationObserver(function(){
+      if(document.querySelector('.cms-app, #cms-root, [class*="CMS_Main"], [class*="cms-root"]')){
+        hideLoading(); obs.disconnect();
+      }
+    });
+    obs.observe(document.body,{childList:true,subtree:true});
+    // 方式2：监听 CMS 自定义事件
+    document.addEventListener('decap-cms-load', hideLoading);
+    // 方式3：兜底定时器
+    setTimeout(hideLoading, 15000);
+  </script>
 </body>
 </html>
